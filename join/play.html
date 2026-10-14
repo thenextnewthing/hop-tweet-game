@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Get the guide — Andrew Warner</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(120% 90% at 0% 0%,#ffe9d6 0%,#fff7ef 45%,#f3ecff 100%);color:#17142b;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:100%;max-width:520px}
+.k{display:inline-block;font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#ff5a36;background:#fff;border:1px solid #ffd7c9;padding:6px 9px;border-radius:99px}
+h1{font:800 clamp(26px,6vw,38px)/1.08 ui-serif,Georgia,serif;letter-spacing:-.02em;margin:14px 0 10px}
+p{margin:0 0 18px;font-size:15px;line-height:1.5;color:#4b4664}
+form{display:flex;gap:8px;flex-wrap:wrap}
+input[type=email]{flex:1 1 220px;font-size:16px;padding:14px 16px;border-radius:12px;border:1.5px solid #d9d3ea;background:#fff;outline:none;min-width:0}
+input[type=email]:focus{border-color:#7b5cff;box-shadow:0 0 0 4px #7b5cff22}
+button,.btn{font:700 15px system-ui;padding:14px 18px;border-radius:12px;border:0;background:#17142b;color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{opacity:.6}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+.small{font-size:12px;color:#8a85a3;margin-top:12px}
+.small a{color:#7b5cff}
+.err{color:#c4302b;font-size:13px;margin-top:10px;min-height:1em}
+#done{display:none}.big{font-size:42px}
+</style></head><body>
+<div class="card" id="form-view">
+<span class="k">Free PDF · by Andrew Warner</span>
+<h1>Put a playable app inside a tweet.</h1>
+<p>The exact technique behind games and forms that run right inside an X post, plus a copy-paste prompt for your AI coding agent.</p>
+<form id="f" novalidate>
+<input id="email" type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+<input class="hp" type="text" name="company" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button id="go" type="submit">Send me the guide</button>
+</form>
+<div class="err" id="err"></div>
+<div class="small">Can't type here? <a href="#" id="open">Open the form in a new tab ↗</a> · You'll also get Andrew's newsletter. Unsubscribe anytime.</div>
+</div>
+<div class="card" id="done">
+<div class="big">✓</div><h1>You're in. Here's your guide.</h1>
+<p>It's also on its way to your inbox.</p>
+<a class="btn" href="/join/guide.pdf" target="_blank" rel="noopener">Download the PDF ↓</a>
+</div>
+<script>
+const em=document.getElementById('email'),f=document.getElementById('f'),err=document.getElementById('err'),go=document.getElementById('go');
+const embedded=window.top!==window.self;
+// tapping the input must focus it, even inside X's iframe
+['pointerdown','touchstart','click'].forEach(n=>em.addEventListener(n,()=>{try{window.focus()}catch(_){}setTimeout(()=>em.focus(),0)},{passive:true}));
+document.getElementById('open').onclick=e=>{e.preventDefault();window.open(location.origin+'/join/play'+(em.value?'#'+encodeURIComponent(em.value):''),'_blank','noopener')};
+if(location.hash.length>1)em.value=decodeURIComponent(location.hash.slice(1));
+f.addEventListener('submit',async e=>{e.preventDefault();err.textContent='';const v=em.value.trim();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){err.textContent='Please enter a valid email.';em.focus();return}
+ go.disabled=true;go.textContent='Sending…';
+ try{const r=await fetch('/join/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:v,company:document.getElementById('company').value,embedded})});
+  const j=await r.json().catch(()=>({}));
+  if(r.ok&&j.ok){document.getElementById('form-view').style.display='none';document.getElementById('done').style.display='block'}
+  else err.textContent=j.message||'Something went wrong. Please try again.'}
+ catch(_){err.textContent='Network error. Please try again.'}
+ go.disabled=false;go.textContent='Send me the guide'});
+</script></body></html>

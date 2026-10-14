@@ -13,8 +13,13 @@ const stars=[...Array(60)].map(()=>({x:Math.random(),y:Math.random()*.7,s:Math.r
 function reset(){b={y:H*.45,v:0};pipes=[];score=0;t=0;parts=[]}reset();
 function S(){return H/480}
 function flap(){if(st==='menu'||st==='over'&&t>30){reset();st='play'}if(st==='play'){b.v=-7.2*S();for(let i=0;i<6;i++)parts.push({x:W*.3,y:b.y,vx:-Math.random()*3,vy:Math.random()*2,l:20})}}
-addEventListener('pointerdown',e=>{e.preventDefault();flap()});
-addEventListener('keydown',e=>{if([' ','ArrowUp','w','Enter'].includes(e.key)){e.preventDefault();flap()}});
+
+function grab(){try{window.focus()}catch(_){}try{c.focus({preventScroll:true})}catch(_){}}
+c.tabIndex=0;c.style.outline='none';addEventListener('load',grab);grab();
+['pointerdown','mousedown','touchstart','click'].forEach(n=>addEventListener(n,grab,{capture:true,passive:true}));
+addEventListener('pointerdown',e=>{flap()});
+let kd=0;function onKey(e){if(e.__h)return;e.__h=1;if([' ','ArrowUp','w','W','Enter'].includes(e.key)||['Space','ArrowUp','KeyW','Enter'].includes(e.code)){e.preventDefault();if(!e.repeat)flap()}}
+window.addEventListener('keydown',onKey,true);document.addEventListener('keydown',onKey,true);
 function step(){t++;const s=S();
  if(st==='play'){b.v+=.42*s;b.y+=b.v;
   const gap=150*s,sp=(2.6+Math.min(score,40)*.05)*s;

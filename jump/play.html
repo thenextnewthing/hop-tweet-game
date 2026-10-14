@@ -6,6 +6,7 @@ html,body{margin:0;height:100%;background:#8fd3ff;overflow:hidden;touch-action:n
 canvas{display:block;width:100vw;height:100vh}
 #pad{position:fixed;inset:auto 0 0 0;height:34%;display:none;pointer-events:none}
 .b{position:absolute;bottom:14px;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.28);border:2px solid rgba(255,255,255,.6);color:#fff;font:700 26px system-ui;display:flex;align-items:center;justify-content:center;pointer-events:auto}
+@media (pointer:fine){.b{width:44px;height:44px;font-size:18px;opacity:.7}#J{width:52px!important;height:52px!important}}
 .b.on{background:rgba(255,255,255,.55)}
 </style></head><body><canvas id="c"></canvas>
 <div id="pad"><div class="b" id="L" style="left:14px">◀</div><div class="b" id="R" style="left:92px">▶</div><div class="b" id="J" style="right:14px;width:76px;height:76px">▲</div></div>
@@ -104,20 +105,29 @@ function draw(){x.setTransform(1,0,0,1,0,0);x.fillStyle='#1a1036';x.fillRect(0,0
  if(st!='play'){x.fillStyle='rgba(26,16,54,.55)';x.fillRect(0,0,VW,VH);x.textAlign='center';x.fillStyle='#fff';
   x.font='900 30px system-ui,-apple-system,sans-serif';x.fillText(st=='menu'?"PIP'S RUN":st=='won'?'YOU MADE IT!':'GAME OVER',VW/2,90);
   x.font='600 11px system-ui,sans-serif';if(st!='menu')x.fillText('score '+score+'   ·   best '+best,VW/2,112);else x.fillText('stomp the blobs · grab the stars · reach the flag',VW/2,112);
-  x.globalAlpha=.6+.4*Math.sin(t/10);x.font='700 12px system-ui,sans-serif';x.fillText(touch?'tap to '+(st=='menu'?'start':'play again'):'press SPACE to '+(st=='menu'?'start':'play again'),VW/2,145);x.globalAlpha=.75;
-  x.font='500 9px system-ui,sans-serif';x.fillText(touch?'◀ ▶ to run, ▲ to jump':'←/→ or A/D to run · Space/↑/W to jump',VW/2,165);x.globalAlpha=1}}
+  x.globalAlpha=.6+.4*Math.sin(t/10);x.font='700 12px system-ui,sans-serif';x.fillText((touch?'tap':'click or press SPACE')+' to '+(st=='menu'?'play':'play again'),VW/2,145);x.globalAlpha=.75;
+  x.font='500 9px system-ui,sans-serif';x.fillText(touch?'◀ ▶ to run, ▲ to jump':'←/→ or A/D run · Space/↑/W jump · or use the buttons',VW/2,165);x.globalAlpha=1}}
 // input
-const KM={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r',' ':'j',ArrowUp:'j',w:'j',W:'j',z:'j',Enter:'j'};
-addEventListener('keydown',e=>{const k=KM[e.key];if(!k)return;e.preventDefault();if(k=='j'&&!keys.j)jumpPress();keys[k]=1});
-addEventListener('keyup',e=>{const k=KM[e.key];if(k)keys[k]=0});
-let touch=matchMedia('(pointer:coarse)').matches;const pad=document.getElementById('pad');
-function showPad(){touch=true;pad.style.display='block'}if(touch)showPad();
+const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',Space:'j',ArrowUp:'j',KeyW:'j',KeyZ:'j',Enter:'j',NumpadEnter:'j'};
+const KK={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r',' ':'j',Spacebar:'j',ArrowUp:'j',w:'j',W:'j',z:'j',Z:'j',Enter:'j',Left:'l',Right:'r',Up:'j'};
+const km=e=>KM[e.code]||KK[e.key];
+function kdn(e){if(e.__h)return;e.__h=1;const k=km(e);if(!k)return;e.preventDefault();if(k=='j'&&!keys.j)jumpPress();keys[k]=1}
+function kup(e){if(e.__h)return;e.__h=1;const k=km(e);if(k){e.preventDefault();keys[k]=0}}
+[window,document].forEach(t=>{t.addEventListener('keydown',kdn,true);t.addEventListener('keyup',kup,true)});
+
+function grab(){try{window.focus()}catch(_){}try{c.focus({preventScroll:true})}catch(_){}}
+c.tabIndex=0;c.style.outline='none';addEventListener('load',grab);grab();
+['pointerdown','mousedown','touchstart','click'].forEach(n=>addEventListener(n,grab,{capture:true,passive:true}));
+
+let touch=matchMedia('(pointer:coarse)').matches;const pad=document.getElementById('pad');pad.style.display='block';
 const btn={L:'l',R:'r',J:'j'};const act=new Map();
 function upd(){keys.l=keys.r=0;const held=new Set(act.values());const wasJ=keys.j;keys.j=0;held.forEach(k=>keys[k]=1);if(keys.j&&!wasJ)jumpPress();for(const id in btn)document.getElementById(id).classList.toggle('on',held.has(btn[id]))}
 function hitBtn(e){const el=document.elementFromPoint(e.clientX,e.clientY);return el&&btn[el.id]}
-addEventListener('pointerdown',e=>{e.preventDefault();if(e.pointerType=='touch'&&pad.style.display!='block')showPad();if(st!='play'){jumpPress();return}const k=hitBtn(e);if(k){act.set(e.pointerId,k);upd()}else if(e.pointerType=='mouse'){jumpPress()}},{passive:false});
-addEventListener('pointermove',e=>{if(!act.has(e.pointerId))return;const k=hitBtn(e);if(k)act.set(e.pointerId,k);else act.delete(e.pointerId);upd()});
-['pointerup','pointercancel'].forEach(n=>addEventListener(n,e=>{act.delete(e.pointerId);upd()}));
-addEventListener('blur',()=>{for(const k in keys)keys[k]=0;act.clear()});
+addEventListener('pointerdown',e=>{if(e.pointerType=='touch')touch=true;if(st!='play'){jumpPress();return}const k=hitBtn(e);if(k){act.set(e.pointerId,k);upd()}else{
+ // tap zones fallback: left third = left, right third = right, middle/upper = jump
+ const fx=e.clientX/innerWidth;const z=fx<.33?'l':fx>.67?'r':'j';act.set(e.pointerId,z);upd()}});
+addEventListener('pointermove',e=>{if(!act.has(e.pointerId))return;const k=hitBtn(e);if(k&&k!=act.get(e.pointerId)){act.set(e.pointerId,k);upd()}});
+['pointerup','pointercancel'].forEach(n=>addEventListener(n,e=>{if(act.delete(e.pointerId))upd()}));
+addEventListener('blur',()=>{for(const k in keys)keys[k]=0;act.clear();upd()});
 load();let last=performance.now(),acc=0;function loop(n){acc+=Math.min(100,n-last);last=n;while(acc>=16.67){step();acc-=16.67}draw();requestAnimationFrame(loop)}requestAnimationFrame(loop);
-</script></body></html>
+addEventListener('contextmenu',e=>e.preventDefault());</script></body></html>

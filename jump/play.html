@@ -32,7 +32,7 @@ const L=[
 "###########################  ######### ##############  ##############################  ########################  ####################### ",
 "###########################  ######### ##############  ##############################  ########################  ####################### "];
 let map,coins,enemies,flagX,p,cam,score,lives,coinsN,st='menu',t=0,msgT=0,parts=[],best=+(localStorage.getItem('pipbest')||0);
-const keys={};
+const keys={};let mouseOn=0,mouseVX=0;
 function load(){map=L.map(r=>r.split(''));coins=[];enemies=[];
  map.forEach((r,y)=>r.forEach((ch,X)=>{if(ch=='o'){coins.push({x:X*T+4,y:y*T+4,a:1});r[X]=' '}if(ch=='e'){enemies.push({x:X*T,y:y*T+2,vx:-.45,a:1,d:0});r[X]=' '}if(ch=='F'){flagX=X*T;r[X]=' '}}));
  p={x:40,y:150,vx:0,vy:0,w:11,h:14,g:0,f:1,inv:0,dead:0,win:0};cam=0}
@@ -52,7 +52,7 @@ function step(){t++;parts.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.vy+=.15;q.l--});part
  if(st!='play')return;
  if(p.dead){p.vy+=.25;p.y+=p.vy;if(++p.dead>110){if(lives<=0){st='over';t=0;if(score>best){best=score;localStorage.setItem('pipbest',best)}}else{const s=score,cn=coinsN;load();score=s;coinsN=cn;p.inv=90}}return}
  if(p.win){p.win++;if(p.y+p.h<11*T){p.y+=1.5}else{p.x+=1.2;p.f=1}if(p.win>150){st='won';t=0;score+=lives*500;if(score>best){best=score;localStorage.setItem('pipbest',best)}}return}
- const l=keys.l,r=keys.r,ac=p.g?.32:.2,mx=2.1;
+ let l=keys.l,r=keys.r;if(mouseOn&&!l&&!r){const tx=mouseVX+cam,dx=tx-(p.x+p.w/2);if(dx<-10){l=1}else if(dx>10){r=1}else if(Math.abs(dx)<6)p.vx*=.6}const ac=p.g?.32:.2,mx=2.1;
  if(l){p.vx-=ac;p.f=-1}if(r){p.vx+=ac;p.f=1}if(!l&&!r)p.vx*=p.g?.78:.95;p.vx=Math.max(-mx,Math.min(mx,p.vx));
  coy=p.g?6:coy-1;if(jb>0)jb--;
  if(jb&&coy>0){p.vy=-5.6;jb=0;coy=0;p.g=0;burst(p.x+5,p.y+14,'#fff',4)}
@@ -106,7 +106,7 @@ function draw(){x.setTransform(1,0,0,1,0,0);x.fillStyle='#1a1036';x.fillRect(0,0
   x.font='900 30px system-ui,-apple-system,sans-serif';x.fillText(st=='menu'?"PIP'S RUN":st=='won'?'YOU MADE IT!':'GAME OVER',VW/2,90);
   x.font='600 11px system-ui,sans-serif';if(st!='menu')x.fillText('score '+score+'   ·   best '+best,VW/2,112);else x.fillText('stomp the blobs · grab the stars · reach the flag',VW/2,112);
   x.globalAlpha=.6+.4*Math.sin(t/10);x.font='700 12px system-ui,sans-serif';x.fillText((touch?'tap':'click or press SPACE')+' to '+(st=='menu'?'play':'play again'),VW/2,145);x.globalAlpha=.75;
-  x.font='500 9px system-ui,sans-serif';x.fillText(touch?'◀ ▶ to run, ▲ to jump':'←/→ or A/D run · Space/↑/W jump · or use the buttons',VW/2,165);x.globalAlpha=1}}
+  x.font='500 9px system-ui,sans-serif';x.fillText(touch?'◀ ▶ to run, ▲ to jump':'Move mouse to run, click to jump  ·  or ←/→ + Space',VW/2,165);x.globalAlpha=1}}
 // input
 const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',Space:'j',ArrowUp:'j',KeyW:'j',KeyZ:'j',Enter:'j',NumpadEnter:'j'};
 const KK={ArrowLeft:'l',a:'l',A:'l',ArrowRight:'r',d:'r',D:'r',' ':'j',Spacebar:'j',ArrowUp:'j',w:'j',W:'j',z:'j',Z:'j',Enter:'j',Left:'l',Right:'r',Up:'j'};
@@ -125,7 +125,12 @@ function upd(){keys.l=keys.r=0;const held=new Set(act.values());const wasJ=keys.
 function hitBtn(e){const el=document.elementFromPoint(e.clientX,e.clientY);return el&&btn[el.id]}
 addEventListener('pointerdown',e=>{if(e.pointerType=='touch')touch=true;if(st!='play'){jumpPress();return}const k=hitBtn(e);if(k){act.set(e.pointerId,k);upd()}else{
  // tap zones fallback: left third = left, right third = right, middle/upper = jump
+ if(e.pointerType=='mouse'){mouseAt(e);act.set(e.pointerId,'j');upd();return}
  const fx=e.clientX/innerWidth;const z=fx<.33?'l':fx>.67?'r':'j';act.set(e.pointerId,z);upd()}});
+function mouseAt(e){const d=devicePixelRatio||1;mouseVX=(e.clientX*d-ox)/sc;mouseOn=1}
+addEventListener('pointermove',e=>{if(e.pointerType=='mouse'&&!hitBtn(e))mouseAt(e)});
+document.addEventListener('mouseleave',()=>{mouseOn=0});
+['keydown'].forEach(n=>addEventListener(n,()=>{mouseOn=0},true));
 addEventListener('pointermove',e=>{if(!act.has(e.pointerId))return;const k=hitBtn(e);if(k&&k!=act.get(e.pointerId)){act.set(e.pointerId,k);upd()}});
 ['pointerup','pointercancel'].forEach(n=>addEventListener(n,e=>{if(act.delete(e.pointerId))upd()}));
 addEventListener('blur',()=>{for(const k in keys)keys[k]=0;act.clear();upd()});

@@ -18,19 +18,50 @@ button:disabled{opacity:.6}
 .small a{color:#7b5cff}
 .err{color:#c4302b;font-size:13px;margin-top:10px;min-height:1em}
 #done{display:none}.big{font-size:42px}
+
+.tw{position:relative;flex:1 1 220px;min-width:0}
+.tw input[type=email]{width:100%;font-family:"Courier New",Courier,ui-monospace,monospace;font-weight:700;letter-spacing:.02em;color:transparent;caret-color:#17142b;background:#fffdf8}
+.tw input::placeholder{color:#b9b3cc}
+.mirror{position:absolute;left:0;top:0;right:0;bottom:0;padding:14px 17.5px;font:700 16px "Courier New",Courier,ui-monospace,monospace;letter-spacing:.02em;color:#17142b;pointer-events:none;white-space:pre;overflow:hidden;display:flex;align-items:center}
+.mirror .in{display:inline-block;white-space:pre}
+.mirror .ch{display:inline-block;animation:strike .18s ease-out}
+@keyframes strike{0%{transform:translateY(-5px) scale(1.35);opacity:0;filter:blur(1px)}60%{transform:translateY(1px) scale(.96);opacity:1}100%{transform:none}}
+#stage{display:none;position:relative;width:100%;max-width:520px;height:330px;margin:auto}
+.paper{position:absolute;left:50%;bottom:150px;width:150px;height:0;transform:translateX(-50%);overflow:hidden;background:linear-gradient(160deg,#ffe1cc,#fff4ea 45%,#ece4ff);border-radius:3px 3px 0 0;box-shadow:0 6px 18px #2a1a5a26;transition:height 1.9s cubic-bezier(.3,.7,.4,1)}
+.paper.up{height:170px}
+.paper .pin{position:absolute;bottom:0;left:0;right:0;height:170px;padding:16px 14px}
+.paper .pk{font:600 6px ui-monospace,monospace;letter-spacing:.12em;color:#ff5a36}
+.paper .pt{font:800 17px/1.05 Georgia,serif;margin-top:8px;color:#17142b}
+.paper .pa{font-size:7px;color:#4b4664;position:absolute;bottom:26px}
+.mach{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);width:300px}
+.shake{animation:clack .11s linear 16}
+@keyframes clack{50%{transform:translateX(-50%) translateY(1.5px)}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:9}
+@media (prefers-reduced-motion:reduce){.mirror .ch{animation:none}.paper{transition:none}.shake{animation:none}}
 </style></head><body>
 <div class="card" id="form-view">
 <span class="k">Free PDF · by Andrew Warner</span>
 <h1>Get the guide to building this form</h1>
 <p>Everything you and your agent need to build forms like this one, to grow your newsletter.</p>
 <form id="f" novalidate>
-<input id="email" type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+<div class="tw"><div class="mirror" aria-hidden="true"><span class="in" id="mir"></span></div><input id="email" type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required></div>
 <input class="hp" type="text" name="company" id="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button id="go" type="submit">Send me the guide</button>
 </form>
 <div class="err" id="err"></div>
 <div class="small">Can't type here? <a href="#" id="open">Open the form in a new tab ↗</a> · You'll also get Andrew's newsletter. Unsubscribe anytime.</div>
 </div>
+<div id="stage" aria-live="polite"><div class="paper" id="paper"><div class="pin"><div class="pk">A FIELD GUIDE</div><div class="pt">Put an email signup form inside a tweet.</div><div class="pa">Andrew Warner</div></div></div>
+<svg class="mach" id="mach" viewBox="0 0 300 150" aria-label="typewriter">
+<defs><linearGradient id="chr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fafafa"/><stop offset=".45" stop-color="#9aa0a8"/><stop offset=".55" stop-color="#e8eaec"/><stop offset="1" stop-color="#6d737b"/></linearGradient>
+<linearGradient id="bod" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2838"/><stop offset="1" stop-color="#0d0b14"/></linearGradient></defs>
+<rect x="40" y="2" width="220" height="16" rx="8" fill="url(#chr)"/><circle cx="34" cy="10" r="9" fill="#17142b"/><circle cx="266" cy="10" r="9" fill="#17142b"/><rect x="20" y="7" width="8" height="6" rx="2" fill="url(#chr)"/>
+<path d="M30 22 H270 L290 92 Q292 100 284 100 H16 Q8 100 10 92 Z" fill="url(#bod)"/>
+<rect x="95" y="30" width="110" height="26" rx="13" fill="#0a0910"/><path d="M110 56 L150 36 L190 56" stroke="#3a3650" stroke-width="2" fill="none"/>
+<text x="150" y="80" text-anchor="middle" fill="#c9a96e" font-family="Georgia,serif" font-size="10" letter-spacing="3">AW·1</text>
+<rect x="6" y="100" width="288" height="44" rx="10" fill="#17142b"/>
+<g fill="#f4efe6" stroke="#55506b" stroke-width="1.5"><circle cx="28.0" cy="113" r="7.5"/><circle cx="52.5" cy="113" r="7.5"/><circle cx="77.0" cy="113" r="7.5"/><circle cx="101.5" cy="113" r="7.5"/><circle cx="126.0" cy="113" r="7.5"/><circle cx="150.5" cy="113" r="7.5"/><circle cx="175.0" cy="113" r="7.5"/><circle cx="199.5" cy="113" r="7.5"/><circle cx="224.0" cy="113" r="7.5"/><circle cx="248.5" cy="113" r="7.5"/><circle cx="273.0" cy="113" r="7.5"/><circle cx="40.0" cy="131" r="7.5"/><circle cx="64.5" cy="131" r="7.5"/><circle cx="89.0" cy="131" r="7.5"/><circle cx="113.5" cy="131" r="7.5"/><circle cx="138.0" cy="131" r="7.5"/><circle cx="162.5" cy="131" r="7.5"/><circle cx="187.0" cy="131" r="7.5"/><circle cx="211.5" cy="131" r="7.5"/><circle cx="236.0" cy="131" r="7.5"/><circle cx="260.5" cy="131" r="7.5"/></g></svg></div>
+<canvas id="fx"></canvas>
 <div class="card" id="done">
 <div class="big">✓</div><h1>You're in. Here's your guide.</h1>
 <p>Your download should start automatically. If it doesn't, use the button below.</p>
@@ -43,12 +74,26 @@ const embedded=window.top!==window.self;
 ['pointerdown','touchstart','click'].forEach(n=>em.addEventListener(n,()=>{try{window.focus()}catch(_){}setTimeout(()=>em.focus(),0)},{passive:true}));
 document.getElementById('open').onclick=e=>{e.preventDefault();window.open(location.origin+'/join/play'+(em.value?'#'+encodeURIComponent(em.value):''),'_blank','noopener')};
 if(location.hash.length>1)em.value=decodeURIComponent(location.hash.slice(1));
+
+const mir=document.getElementById('mir'),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;let prev='';
+function syncMir(){const v=em.value;if(v.startsWith(prev)&&v.length===prev.length+1){const s=document.createElement('span');s.className='ch';s.textContent=v.slice(-1);mir.appendChild(s)}else if(v!==prev){mir.textContent='';for(const c of v){const s=document.createElement('span');s.className='ch';s.style.animation='none';s.textContent=c;mir.appendChild(s)}}prev=v;mir.style.transform='translateX('+(-em.scrollLeft)+'px)'}
+['input','keyup','scroll','select','click'].forEach(n=>em.addEventListener(n,syncMir));syncMir();
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function confetti(ms){const c=document.getElementById('fx'),x=c.getContext('2d'),d=devicePixelRatio||1;c.width=innerWidth*d;c.height=innerHeight*d;x.scale(d,d);
+ const cols=['#ff5a36','#7b5cff','#ffd34e','#38e1c4','#ff8ac2','#17142b'],P=[...Array(140)].map(()=>({x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight*.6,vx:(Math.random()-.5)*1.6,vy:1.5+Math.random()*2.5,r:Math.random()*6.28,vr:(Math.random()-.5)*.25,w:5+Math.random()*5,h:3+Math.random()*4,c:cols[Math.random()*6|0]}));
+ const t0=performance.now();return new Promise(res=>{(function f(t){x.clearRect(0,0,innerWidth,innerHeight);const fade=Math.max(0,1-(t-t0-ms*.6)/(ms*.4));x.globalAlpha=Math.min(1,fade);
+  for(const q of P){q.x+=q.vx+Math.sin((t/400)+q.r)*.4;q.y+=q.vy;q.r+=q.vr;x.save();x.translate(q.x,q.y);x.rotate(q.r);x.fillStyle=q.c;x.fillRect(-q.w/2,-q.h/2,q.w,q.h*Math.abs(Math.cos(q.r*1.3)));x.restore()}
+  if(t-t0<ms)requestAnimationFrame(f);else{x.clearRect(0,0,innerWidth,innerHeight);res()}})(t0)})}
+async function celebrate(){const fv=document.getElementById('form-view'),st=document.getElementById('stage'),pa=document.getElementById('paper'),m=document.getElementById('mach'),dn=document.getElementById('done');
+ fv.style.display='none';
+ if(!RM){st.style.display='block';m.classList.add('shake');await sleep(60);pa.classList.add('up');await sleep(2000);confetti(2200);await sleep(1300);st.style.display='none'}
+ dn.style.display='block'}
 f.addEventListener('submit',async e=>{e.preventDefault();err.textContent='';const v=em.value.trim();
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){err.textContent='Please enter a valid email.';em.focus();return}
  go.disabled=true;go.textContent='Sending…';
  try{const r=await fetch('/join/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:v,company:document.getElementById('company').value,embedded})});
   const j=await r.json().catch(()=>({}));
-  if(r.ok&&j.ok){document.getElementById('form-view').style.display='none';document.getElementById('done').style.display='block';try{document.getElementById('dl').click()}catch(_){}}
+  if(r.ok&&j.ok){try{document.getElementById('dl').click()}catch(_){}celebrate()}
   else err.textContent=j.message||'Something went wrong. Please try again.'}
  catch(_){err.textContent='Network error. Please try again.'}
  go.disabled=false;go.textContent='Send me the guide'});

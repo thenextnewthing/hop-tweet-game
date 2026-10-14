@@ -10,9 +10,9 @@ body{margin:0;font-family:"Inter","Helvetica Neue",Arial,sans-serif;color:#1d1a2
 .tweet{background:#fff;border-radius:18px;box-shadow:0 20px 50px #2a1a5a22;padding:18px;width:4.6in;border:1px solid #eee}
 .tweet .h{display:flex;gap:10px;align-items:center;font-weight:700}.av{width:34px;height:34px;border-radius:50%;background:#ff8a3d}
 .tweet .h span{font-weight:400;color:#777}
-.player{margin-top:12px;border-radius:12px;height:2.2in;background:linear-gradient(#7cc8ff,#d8f1ff);position:relative;overflow:hidden}
-.player:after{content:"";position:absolute;left:0;right:0;bottom:0;height:.45in;background:#b8743f;border-top:8px solid #5ccf6a}
-.player b{position:absolute;left:1.2in;bottom:.5in;width:22px;height:22px;background:#ff8a3d;border-radius:4px;z-index:2}
+.player{margin-top:12px;border-radius:12px;height:2.2in;background:linear-gradient(135deg,#ffe9d6,#f3ecff);position:relative;overflow:hidden;padding:18px}
+.player:after{display:none;content:"";position:absolute;left:0;right:0;bottom:0;height:.45in;background:#b8743f;border-top:8px solid #5ccf6a}
+.player b{display:none;position:absolute;left:1.2in;bottom:.5in;width:22px;height:22px;background:#ff8a3d;border-radius:4px;z-index:2}
 .by{font-size:11pt;color:#4b4664}.by strong{color:#1d1a2e}
 h2{font:800 24pt/1.1 Georgia,serif;letter-spacing:-.01em;margin:0 0 .15in}
 h3{font-size:12pt;margin:.22in 0 .06in}
@@ -28,151 +28,140 @@ ol,ul{padding-left:1.2em;margin:.05in 0}li{margin:.04in 0}
 .foot{position:absolute;bottom:.45in;left:.9in;right:.9in;font-size:8pt;color:#9a93b4;display:flex;justify-content:space-between}
 table{border-collapse:collapse;width:100%;font-size:9.2pt}td{border-bottom:1px solid #eee;padding:6px 6px;vertical-align:top}td:first-child{font-family:ui-monospace,Menlo,monospace;font-size:8.6pt;white-space:nowrap;color:#5a3fd6}
 .prompt pre{font-size:7.1pt;line-height:1.38;padding:10px 14px;background:#fffaf5;color:#2b2540;border:1px solid #f1e3d6}
-</style></head><body>
-
+</style></head><body><style>.fi{display:flex;gap:6px;margin-top:10px}.fi i{flex:1;background:#fff;border:1.5px solid #d9d3ea;border-radius:8px;height:28px;font-style:normal;font-size:9pt;color:#999;padding:6px 8px}.fi u{text-decoration:none;background:#17142b;color:#fff;border-radius:8px;font-size:8.5pt;font-weight:700;padding:7px 10px}.ph{font:800 15pt Georgia,serif;color:#17142b}.pk{font:600 6.5pt monospace;letter-spacing:.12em;color:#ff5a36}</style>
 <section class="page cover">
 <div><div class="tag">A field guide · 2026</div>
-<h1>Put a playable app inside a tweet.</h1>
-<div class="sub">How X player cards let a game or a form run right inside a post, and a copy-paste prompt your AI coding agent can use to build one.</div></div>
+<h1>Put an email signup form inside a tweet.</h1>
+<div class="sub">How X player cards let people subscribe without leaving the post, and a copy-paste prompt your AI coding agent can use to build one for your newsletter.</div></div>
 <div class="tweet"><div class="h"><div class="av"></div>Andrew Warner <span>@AndrewWarner</span></div>
-<div style="margin-top:8px">Play this right here in the post 👇</div><div class="player"><b></b></div>
+<div style="margin-top:8px">Want the guide? Drop your email right here 👇</div>
+<div class="player"><div class="pk">FREE PDF</div><div class="ph">Get the guide.</div><div class="fi"><i>you@example.com</i><u>Send it</u></div></div>
 <div style="font-size:9pt;color:#777;margin-top:6px">games.codeshiftagent.com</div></div>
 <div class="by">By <strong>Andrew Warner</strong></div>
 </section>
 
 <section class="page"><div class="num">01</div>
-<h2>The trick in one paragraph</h2>
-<p class="lead">When you paste a link into a post, X's crawler (it identifies itself as <code>Twitterbot</code>) fetches the page and reads its meta tags. If the page says <code>twitter:card = player</code> and points to an HTTPS page with <code>twitter:player</code>, X can show your page in an iframe inside the post. That page can be anything a browser can run: a video, a game, a form.</p>
-<h3>The tags</h3>
+<h2>How a form gets inside a post</h2>
+<p class="lead">When you paste a link into a post, X's crawler (<code>Twitterbot</code>) reads the page's meta tags. If they declare a <em>player card</em>, X can show an HTTPS page of yours in an iframe inside the post. Usually that's a video player. It can just as well be a signup form.</p>
+<h3>The tags on your share page</h3>
 <table>
 <tr><td>twitter:card</td><td><code>player</code></td></tr>
-<tr><td>twitter:player</td><td>HTTPS URL of the page that runs inside the iframe</td></tr>
-<tr><td>twitter:player:width / height</td><td>The iframe size in pixels, e.g. 640 × 480</td></tr>
-<tr><td>twitter:image</td><td>Preview image shown before the iframe loads, and where players aren't supported. Match the player's aspect ratio.</td></tr>
-<tr><td>twitter:title / description</td><td>Text shown with the card</td></tr>
-<tr><td>og:*</td><td>Open Graph equivalents, for other sites and as a fallback</td></tr>
+<tr><td>twitter:player</td><td>HTTPS URL of the form page that loads inside the iframe</td></tr>
+<tr><td>twitter:player:width / height</td><td>Iframe size in pixels, e.g. 640 × 480</td></tr>
+<tr><td>twitter:image</td><td>Preview shown before the form loads. Make it a picture of the form.</td></tr>
+<tr><td>twitter:title / description</td><td>Text shown with the card: say what they get</td></tr>
+<tr><td>og:*</td><td>Open Graph equivalents for other sites</td></tr>
 </table>
-<h3>A real example</h3>
-<p>Pieter Levels (@levelsio) used this to boot Windows XP inside a post. His share link's page has these tags:</p>
-<pre>&lt;meta name="twitter:card" content="player"&gt;
-&lt;meta name="twitter:player" content="https://pieter.com/?embed=1"&gt;
-&lt;meta name="twitter:player:width" content="640"&gt;
-&lt;meta name="twitter:player:height" content="480"&gt;
-&lt;meta name="twitter:image" content="https://pieter.com/x/card-xp.jpg"&gt;</pre>
-<p>Two details worth copying: the iframe points to a stripped-down, screen-only version of the app (<code>?embed=1</code>), and humans who open the share link directly are redirected to the full site with a small script.</p>
-<div class="box">Use <code>name="twitter:…"</code> for X's tags. Open Graph uses <code>property="og:…"</code>. Mixing them up is a common reason cards don't show.</div>
-<div class="foot"><span>Put a playable app inside a tweet</span><span>Andrew Warner</span></div>
-</section>
+<h3>Where this came from</h3>
+<p>Pieter Levels (@levelsio) booted Windows XP inside a post this way (his player URL is <code>pieter.com/?embed=1</code> at 640×480). I copied the technique for a tiny platformer, <em>Pip's Run</em>, which played inside my post. That proved it works on our domain. The obvious next step was the useful version: a form that grows a newsletter.</p>
+<h3>Three URLs</h3>
+<pre>https://example.com/join/x         <span class="c"># paste this in the post (tags only)</span>
+https://example.com/join/play      <span class="c"># the form X loads in the iframe</span>
+https://example.com/join/card.png  <span class="c"># preview image</span></pre>
+<div class="box">X's tags use <code>name="twitter:…"</code>; Open Graph uses <code>property="og:…"</code>. The tags must be in the raw HTML, not added by JavaScript.</div>
+<div class="foot"><span>Put an email signup form inside a tweet</span><span>Andrew Warner</span></div></section>
 
 <section class="page"><div class="num">02</div>
-<h2>What we learned shipping it</h2>
-<p class="lead">I built a tiny platformer, <em>Pip's Run</em>, and this signup form, and ran both inside posts from <code>games.codeshiftagent.com</code>. Here's what mattered.</p>
-<h3>1. It loads on click</h3>
-<p>X shows the preview image first. The player iframe loads when someone taps it, so your preview image is your "press start" screen. Make it look like the app.</p>
-<h3>2. Mouse and taps work. Keyboard focus is unreliable.</h3>
-<p>Our first version used arrow keys, and inside X the keys did nothing: the keystrokes stayed with X's page instead of reaching the iframe. Clicks and taps always reached it. What fixed it:</p>
-<ul><li>Never call <code>preventDefault()</code> on <code>pointerdown</code>. It stops the browser from moving focus into the iframe.</li>
-<li>On any tap or click, call <code>window.focus()</code> and focus your canvas or input.</li>
-<li>Design for mouse and touch first: on-screen buttons, "run toward the pointer", click to jump.</li>
-<li>For forms: focus the input on tap, and offer an "open in new tab" fallback.</li></ul>
-<h3>3. Don't block framing</h3>
-<p>Serve over HTTPS and don't send <code>X-Frame-Options</code> or a restrictive CSP <code>frame-ancestors</code>. Our first deploy whitelisted only x.com and twitter.com, which can break if X frames the player from another origin. Pieter sends no framing headers at all, and that is what we use now.</p>
-<h3>4. Caching</h3>
-<p>X caches card metadata for a while; guides commonly cite up to about 7 days. If you change the tags or image, share the URL with a new query string like <code>?v=3</code>. If you only change the player page itself, no new URL is needed: the iframe loads your live page every time.</p>
-<h3>5. The approval caveat</h3>
-<div class="box warn">Historically, X required player-card domains to be approved, and the old Card Validator no longer shows previews. Third-party guides still say approval is needed. In our case a brand-new subdomain rendered as a player card. Treat that as "worked for us," not a guarantee. Test by pasting your URL into a draft post without publishing.</div>
-<div class="foot"><span>Put a playable app inside a tweet</span><span>Andrew Warner</span></div>
-</section>
+<h2>Making the form work in the iframe</h2>
+<p class="lead">A form inside someone else's page has quirks. These are the ones that mattered for us.</p>
+<h3>1. It loads on tap</h3>
+<p>Readers see your preview image first. One tap loads the form. So the image should look like the form, with the promise in big type.</p>
+<h3>2. Taps work. Keyboard focus needs help.</h3>
+<p>In our game, keystrokes stayed with X's page instead of reaching the iframe, while taps and clicks always got through. For a form that means:</p>
+<ul><li>On <code>pointerdown</code>, <code>touchstart</code> and <code>click</code> on the input, call <code>window.focus()</code> and then <code>input.focus()</code>.</li>
+<li>Don't call <code>preventDefault()</code> on pointer events. That can stop focus moving into the iframe.</li>
+<li>Use <code>type="email"</code>, <code>inputmode="email"</code> and <code>autocomplete="email"</code>, so phones show the right keyboard and offer autofill.</li>
+<li>Font size of 16px or more on the input, so iPhones don't zoom in.</li></ul>
+<h3>3. Always have a fallback</h3>
+<p>Some apps or browsers may not let people type in an embedded frame. Add a small link, "Open the form in a new tab", that calls <code>window.open()</code> on your form page. Nobody gets stuck.</p>
+<h3>4. Fit 640×480 and phones</h3>
+<p>One headline, one line of copy, one field, one button. Center it, and let the button wrap under the input on narrow screens.</p>
+<h3>5. Don't block framing</h3>
+<p>Serve over HTTPS. Don't send <code>X-Frame-Options</code> or a restrictive CSP <code>frame-ancestors</code>. An allowlist of only x.com and twitter.com can break if X frames the page from another origin.</p>
+<div class="foot"><span>Put an email signup form inside a tweet</span><span>Andrew Warner</span></div></section>
 
 <section class="page"><div class="num">03</div>
-<h2>The architecture</h2>
-<p class="lead">Three URLs, one tiny Cloudflare Worker.</p>
-<pre><span class="c"># what you paste into the post</span>
-https://example.com/join/x       → card page: meta tags only (+ redirect for humans)
-<span class="c"># what X loads inside the iframe</span>
-https://example.com/join/play    → the app/form, built to fit 640×480
-<span class="c"># preview image</span>
-https://example.com/join/card.png</pre>
-<h3>For a lead form, add a backend route</h3>
-<pre>POST /join/api/subscribe
-  1. validate email (and a hidden honeypot field)
+<h2>Connecting it to your newsletter</h2>
+<p class="lead">The form posts to your own server, which talks to your email provider. Here beehiiv is the worked example; any provider with a "create subscriber" API works the same way.</p>
+<pre>POST /join/api/subscribe           <span class="c"># your Worker</span>
+  1. reject if honeypot filled or email invalid
   2. rate-limit by IP
   3. POST https://api.beehiiv.com/v2/publications/{PUB_ID}/subscriptions
        Authorization: Bearer {BEEHIIV_API_KEY}
-       { "email": "...", "send_welcome_email": true,
-         "utm_source": "x", "utm_medium": "tweet-card" }
-  4. return { ok: true } → show thank-you + PDF link</pre>
-<p>Keep API keys in Worker secrets, never in the page. The form runs inside X, but it talks only to your own domain.</p>
-<h3>Checklist before you post</h3>
-<ol>
-<li><code>curl -A "Twitterbot/1.0" https://example.com/join/x</code> shows the tags in the raw HTML (not added by JavaScript).</li>
-<li>The player page loads over HTTPS with no framing-blocking headers.</li>
-<li>It fits and works at 640×480 and on a phone.</li>
-<li>Embed it in a test page on another domain and try it with mouse only, then touch.</li>
-<li>Paste the card URL into a draft post to see the preview. Don't publish until it looks right.</li>
-</ol>
-<div class="foot"><span>Put a playable app inside a tweet</span><span>Andrew Warner</span></div>
-</section>
+       { "email": "...", "reactivate_existing": false,
+         "send_welcome_email": true, "utm_source": "x",
+         "utm_medium": "tweet-card", "referring_site": "x.com" }
+  4. 2xx → { ok: true } → thank-you screen</pre>
+<h3>Keep the key on the server</h3>
+<p>Store the API key and publication ID as Worker secrets. The page never sees them. If they're missing, return a friendly "not open yet" error and log it. Never fake a success.</p>
+<h3>Basic abuse protection</h3>
+<ul><li><strong>Honeypot:</strong> a hidden field humans never fill. Bots often do.</li>
+<li><strong>Rate limit:</strong> a few attempts per IP per few minutes.</li>
+<li><strong>Validate</strong> the email server-side, not just in the browser.</li></ul>
+<h3>Deliver the lead magnet twice</h3>
+<p>Show a thank-you screen with a download button for your PDF right inside the post, and link the same PDF in your provider's welcome email. People who close the card still get it.</p>
+<h3>Caching and the domain caveat</h3>
+<p>X caches card data for a while (guides commonly cite up to about 7 days). Change the title or image? Share the URL with a new query like <code>?v=2</code>. Changes to the form page itself show up right away.</p>
+<div class="box warn">X historically required approval for player-card domains, and its Card Validator no longer shows previews. Our new subdomain rendered as a player card, but treat that as "worked for us," not a guarantee. Test by pasting your URL into a draft post without publishing.</div>
+<div class="foot"><span>Put an email signup form inside a tweet</span><span>Andrew Warner</span></div></section>
 
 <section class="page prompt"><div class="num">04</div>
 <h2>For your agent: the prompt</h2>
-<p class="lead" style="margin-bottom:.08in">Paste this into Claude Code, Codex, Cursor or any coding agent with access to your Cloudflare account.</p>
-<pre>Build an email signup form that runs INSIDE a post on X using a player card,
-deployed as a single Cloudflare Worker.
+<p class="lead" style="margin-bottom:.08in">Paste into Claude Code, Codex, Cursor or any coding agent with access to your Cloudflare account. Fill in the {BRACES}.</p>
+<pre>Build an email signup form that runs INSIDE a post on X via a player
+card, as one Cloudflare Worker on {DOMAIN}. Newsletter provider:
+{PROVIDER} (worked example below is beehiiv; adapt the API call).
 
-ROUTES (all HTTPS, on my domain {DOMAIN}):
-- GET /join/x      Card page. Static HTML with these tags in the &lt;head&gt;:
+ROUTES
+- GET /join/x  Card page, static HTML. In &lt;head&gt;:
     &lt;meta name="twitter:card" content="player"&gt;
     &lt;meta name="twitter:title" content="{TITLE}"&gt;
-    &lt;meta name="twitter:description" content="{DESCRIPTION}"&gt;
+    &lt;meta name="twitter:description" content="{WHAT THEY GET}"&gt;
     &lt;meta name="twitter:image" content="https://{DOMAIN}/join/card.png"&gt;
     &lt;meta name="twitter:player" content="https://{DOMAIN}/join/play"&gt;
     &lt;meta name="twitter:player:width" content="640"&gt;
     &lt;meta name="twitter:player:height" content="480"&gt;
-    plus matching og:title/og:description/og:image/og:url.
-    Body: a script that redirects humans to /join/play.
-- GET /join/play   The form. Designed to fit 640x480 and phones. One email
-    input, a hidden honeypot input named "company", a submit button,
-    a thank-you state with a download link to /join/guide.pdf.
-    Tapping the input must focus it (call window.focus() then input.focus()
-    on pointerdown/touchstart/click). Never preventDefault on pointerdown.
-    Add an "Open in new tab" link that calls window.open(...) as a fallback.
-- GET /join/card.png  1200x628 or 4:3 preview image of the form.
-- GET /join/guide.pdf The lead magnet.
-- POST /join/api/subscribe  JSON {email, company}.
-    Reject if honeypot filled or email invalid (400).
-    Rate-limit per IP (CF-Connecting-IP), e.g. 5 per 10 minutes.
-    If env.BEEHIIV_API_KEY or env.BEEHIIV_PUBLICATION_ID is missing,
-    log it and return 503 {ok:false, message:"Signups aren't open yet"}.
-    Otherwise POST https://api.beehiiv.com/v2/publications/
-      ${env.BEEHIIV_PUBLICATION_ID}/subscriptions
-      headers: Authorization: Bearer ${env.BEEHIIV_API_KEY},
-               Content-Type: application/json
-      body: {email, reactivate_existing:false, send_welcome_email:true,
-             utm_source:"x", utm_medium:"tweet-card", referring_site:"x.com"}
-    On 2xx return {ok:true}; otherwise log status/body, return 502
-    with a friendly message.
+    + og:title, og:description, og:image, og:url.
+    Body: script redirecting humans to /join/play.
+- GET /join/play  The form, designed for 640x480 and phones: headline,
+    one line of copy, email input (type=email, inputmode=email,
+    autocomplete=email, font-size &gt;= 16px), hidden honeypot input
+    "company", submit button, inline error text, and a thank-you state
+    with a download button for /join/guide.pdf.
+    On pointerdown/touchstart/click of the input: window.focus() then
+    input.focus(). Never preventDefault on pointer events.
+    Add an "Open the form in a new tab" link using window.open().
+- GET /join/card.png  Screenshot of the form at 640x480 (2x).
+- GET /join/guide.pdf  The lead magnet.
+- POST /join/api/subscribe  JSON {email, company}:
+    400 if honeypot filled or email invalid (validate server-side).
+    429 if more than 5 attempts per CF-Connecting-IP in 10 minutes.
+    If env.API_KEY / env.PUBLICATION_ID missing: console.error and
+    return 503 {ok:false, message:"Signups aren't open just yet"}.
+    Else (beehiiv): POST https://api.beehiiv.com/v2/publications/
+      ${env.PUBLICATION_ID}/subscriptions
+      Authorization: Bearer ${env.API_KEY}
+      {email, reactivate_existing:false, send_welcome_email:true,
+       utm_source:"x", utm_medium:"tweet-card", referring_site:"x.com"}
+    2xx → {ok:true}. Else log status + body, return 502 friendly msg.
+- No X-Frame-Options, no CSP frame-ancestors. HTTPS only.
 
-HEADERS: do NOT send X-Frame-Options or CSP frame-ancestors.
+SECRETS  wrangler secret put API_KEY ; wrangler secret put PUBLICATION_ID
 
-SECRETS: wrangler secret put BEEHIIV_API_KEY
-         wrangler secret put BEEHIIV_PUBLICATION_ID
-
-TEST:
-1. curl -A "Twitterbot/1.0" https://{DOMAIN}/join/x and confirm the tags.
-2. Serve a local page on another origin that iframes /join/play at
-   640x480; with a headless browser click the input, type an email,
-   submit, and screenshot each state.
-3. Submit with the honeypot filled and confirm it is rejected.
-4. Paste the /join/x URL into a draft post on X (do not publish) to
-   confirm the player card renders.</pre>
-<div class="foot"><span>Put a playable app inside a tweet</span><span>Andrew Warner</span></div>
-</section>
+TEST
+1. curl -A "Twitterbot/1.0" https://{DOMAIN}/join/x → tags present.
+2. Local page on another origin iframes /join/play at 640x480. Headless
+   browser: click the parent page first, then click the input, confirm
+   it's focused, type an email, submit, screenshot each state.
+3. Honeypot filled → rejected. Bad email → rejected. 6th try → 429.
+4. One real signup → appears in {PROVIDER}, welcome email links PDF.
+5. Paste /join/x into a draft post on X (don't publish) to check it.</pre>
+<div class="foot"><span>Put an email signup form inside a tweet</span><span>Andrew Warner</span></div></section>
 
 <section class="page cover" style="justify-content:center">
 <div class="tag">Thanks for reading</div>
-<h1 style="font-size:40pt">Now go put something fun in a post.</h1>
-<div class="sub">See it live: play <em>Pip's Run</em> at games.codeshiftagent.com/jump, and this form at games.codeshiftagent.com/join.</div>
+<h1 style="font-size:40pt">Now let people subscribe without leaving the post.</h1>
+<div class="sub">See it live: the form that sent you this guide is at games.codeshiftagent.com/join.</div>
 <div class="by" style="margin-top:.4in">— <strong>Andrew Warner</strong></div>
 </section>
 </body></html>

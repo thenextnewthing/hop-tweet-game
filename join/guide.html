@@ -98,8 +98,8 @@ https://example.com/join/card.png  <span class="c"># preview image</span></pre>
 <ul><li><strong>Honeypot:</strong> a hidden field humans never fill. Bots often do.</li>
 <li><strong>Rate limit:</strong> a few attempts per IP per few minutes.</li>
 <li><strong>Validate</strong> the email server-side, not just in the browser.</li></ul>
-<h3>Deliver the lead magnet twice</h3>
-<p>Show a thank-you screen with a download button for your PDF right inside the post, and link the same PDF in your provider's welcome email. People who close the card still get it.</p>
+<h3>Deliver the lead magnet on the spot</h3>
+<p>Right after a successful signup, show a thank-you screen inside the post and start the PDF download automatically, with a download button as a fallback. No email setup required.</p>
 <h3>Caching and the domain caveat</h3>
 <p>X caches card data for a while (guides commonly cite up to about 7 days). Change the title or image? Share the URL with a new query like <code>?v=2</code>. Changes to the form page itself show up right away.</p>
 <div class="box warn">X historically required approval for player-card domains, and its Card Validator no longer shows previews. Our new subdomain rendered as a player card, but treat that as "worked for us," not a guarantee. Test by pasting your URL into a draft post without publishing.</div>
@@ -127,7 +127,8 @@ ROUTES
     one line of copy, email input (type=email, inputmode=email,
     autocomplete=email, font-size &gt;= 16px), hidden honeypot input
     "company", submit button, inline error text, and a thank-you state
-    with a download button for /join/guide.pdf.
+    that auto-starts the /join/guide.pdf download
+    (download button as fallback).
     On pointerdown/touchstart/click of the input: window.focus() then
     input.focus(). Never preventDefault on pointer events.
     Add an "Open the form in a new tab" link using window.open().
@@ -154,7 +155,8 @@ TEST
    browser: click the parent page first, then click the input, confirm
    it's focused, type an email, submit, screenshot each state.
 3. Honeypot filled → rejected. Bad email → rejected. 6th try → 429.
-4. One real signup → appears in {PROVIDER}, welcome email links PDF.
+4. One real signup → appears in {PROVIDER}; the thank-you screen
+   auto-starts the PDF download. Then delete the test subscriber.
 5. Paste /join/x into a draft post on X (don't publish) to check it.</pre>
 <div class="foot"><span>Put an email signup form inside a tweet</span><span>Andrew Warner</span></div></section>
 

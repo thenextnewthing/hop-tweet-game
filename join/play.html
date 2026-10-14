@@ -33,8 +33,8 @@ button:disabled{opacity:.6}
 </div>
 <div class="card" id="done">
 <div class="big">✓</div><h1>You're in. Here's your guide.</h1>
-<p>It's also on its way to your inbox.</p>
-<a class="btn" href="/join/guide.pdf" target="_blank" rel="noopener">Download the PDF ↓</a>
+<p>Your download should start automatically. If it doesn't, use the button below.</p>
+<a class="btn" id="dl" href="/join/guide.pdf" download="put-a-signup-form-in-a-tweet.pdf" target="_blank" rel="noopener">Download the PDF ↓</a>
 </div>
 <script>
 const em=document.getElementById('email'),f=document.getElementById('f'),err=document.getElementById('err'),go=document.getElementById('go');
@@ -48,7 +48,7 @@ f.addEventListener('submit',async e=>{e.preventDefault();err.textContent='';cons
  go.disabled=true;go.textContent='Sending…';
  try{const r=await fetch('/join/api/subscribe',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:v,company:document.getElementById('company').value,embedded})});
   const j=await r.json().catch(()=>({}));
-  if(r.ok&&j.ok){document.getElementById('form-view').style.display='none';document.getElementById('done').style.display='block'}
+  if(r.ok&&j.ok){document.getElementById('form-view').style.display='none';document.getElementById('done').style.display='block';try{document.getElementById('dl').click()}catch(_){}}
   else err.textContent=j.message||'Something went wrong. Please try again.'}
  catch(_){err.textContent='Network error. Please try again.'}
  go.disabled=false;go.textContent='Send me the guide'});
